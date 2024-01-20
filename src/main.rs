@@ -2,22 +2,14 @@ use ratatui::{
     prelude::{CrosstermBackend, Terminal},
     widgets::Paragraph,
 };
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////PRELUDE
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // startup: Enable raw mode for the terminal, giving us fine control over user input
     crossterm::terminal::enable_raw_mode()?;
     crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
-
-    // Initialize the terminal backend using crossterm
     let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-
-    // Define our counter variable
-    // This is the state of our application
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////TERMINAL INIT
     let mut counter = 0;
-
-    // Main application loop
     loop {
-        // Render the UI
         terminal.draw(|f| {
             f.render_widget(Paragraph::new(format!("Counter: {counter}")), f.size());
         })?;
@@ -37,10 +29,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-
-    // shutdown down: reset terminal back to original state
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////TERMINAL EXIT
     crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
     crossterm::terminal::disable_raw_mode()?;
-
     Ok(())
 }
