@@ -9,9 +9,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////TERMINAL INIT
     let mut counter = 0;
+    let layout = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(vec![
+            Constraint::Percentage(50),
+            Constraint::Percentage(50),
+        ])
+        .split(frame.size());
     loop {
         terminal.draw(|f| {
-            f.render_widget(Paragraph::new(format!("Counter: {counter}")), f.size());
+            frame.render_widget(
+                Paragraph::new("Top")
+                    .block(Block::new().borders(Borders::ALL)),
+                layout[0]);
+            frame.render_widget(
+                Paragraph::new("Bottom")
+                    .block(Block::new().borders(Borders::ALL)),
+                layout[1]);
         })?;
 
         // Check for user input every 250 milliseconds
